@@ -1,3 +1,5 @@
+'use client'
+
 import Title from '@shared/Title'
 import Link from 'next/link'
 
@@ -10,13 +12,13 @@ export default function AdminPage() {
           href="/admin/project"
           className="flex w-[200px] h-[80px] bg-blue-400 hover:bg-blue-300 justify-center items-center text-white text-[16px] font-bold rounded-lg"
         >
-          프로젝트 작성하기
+          프로젝트 관리하기
         </Link>
         <Link
           href="/admin/blog"
           className="flex w-[200px] h-[80px] bg-red-400 hover:bg-red-300 justify-center items-center text-white text-[16px] font-bold rounded-lg"
         >
-          블로그 작성하기
+          블로그 관리하기
         </Link>
       </div>
     </div>
