@@ -1,7 +1,7 @@
 'use client'
 
-import usePosts from '@/hooks/usePosts'
-import transformDate from '@/utils/transformDate'
+import usePosts from '@hooks/usePosts'
+import transformDate from '@utils/transformDate'
 import Link from 'next/link'
 
 export default function BlogAdminPage() {

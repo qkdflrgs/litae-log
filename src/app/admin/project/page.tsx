@@ -1,7 +1,7 @@
 'use client'
 
-import useProjects from '@/hooks/useProjects'
-import transformDate from '@/utils/transformDate'
+import useProjects from '@hooks/useProjects'
+import transformDate from '@utils/transformDate'
 import Link from 'next/link'
 
 export default function ProjectAdminPage() {
