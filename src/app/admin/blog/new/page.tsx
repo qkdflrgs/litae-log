@@ -4,115 +4,24 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
-import React, { ChangeEvent, useState } from 'react'
-import useNewPost from '@/hooks/useNewPost'
-import useUploadImage from '@/hooks/useUploadImage'
-import { deleteObject, ref } from 'firebase/storage'
-import { storage } from '@/remote/firebase'
+import React from 'react'
+import useUploadImage from '@hooks/useUploadImage'
+import useNewPostValues from '@hooks/useNewPostValues'
 
 export default function NewPostPage() {
-  const [index, setIndex] = useState<string>('')
-  const [category, setCategory] = useState<string>('')
-  const [image, setImage] = useState<string | null>()
-  const { uploadImage } = useUploadImage()
-  const { newPostData, setNewPostData, resetNewPostData, submitNewPost } =
-    useNewPost()
-
-  const possibleSubmit =
-    newPostData.title.length === 0 && newPostData.category.length === 0
-
-  const handleMarkdown = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setNewPostData((prev) => ({
-      ...prev,
-      content: e.target.value,
-    }))
-  }
-
-  const handleInputImg = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const file = e.target.files[0]
-      const url = await uploadImage('blog', file)
-
-      setImage(url)
-    }
-  }
-
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { id, value },
-    } = e
-
-    if (id === 'title') {
-      setNewPostData((prev) => ({
-        ...prev,
-        title: value,
-      }))
-    }
-
-    if (id === 'description') {
-      setNewPostData((prev) => ({
-        ...prev,
-        description: value,
-      }))
-    }
-
-    if (id === 'thumbnail') {
-      setNewPostData((prev) => ({
-        ...prev,
-        thumbnailImage: value,
-      }))
-    }
-
-    if (id === 'category') {
-      setCategory(value)
-    }
-
-    if (id === 'index') {
-      setIndex(value)
-    }
-  }
-
-  const handleAddCategory = () => {
-    const currentCategory = newPostData.category
-    setNewPostData((prev) => ({
-      ...prev,
-      category: [...currentCategory, category],
-    }))
-    setCategory('')
-  }
-
-  const handleAddIndex = () => {
-    const currentIndex = newPostData.index
-    setNewPostData((prev) => ({ ...prev, index: [...currentIndex, index] }))
-    setIndex('')
-  }
-
-  const handleDeleteCategory = (deleteCategory: string) => {
-    const updatedCategories = newPostData.category.filter(
-      (item) => item !== deleteCategory,
-    )
-    setNewPostData((prev) => ({
-      ...prev,
-      category: updatedCategories,
-    }))
-  }
-
-  const handleDeleteIndex = (deleteIndex: string) => {
-    const updatedIndex = newPostData.index.filter(
-      (item) => item !== deleteIndex,
-    )
-    setNewPostData((prev) => ({
-      ...prev,
-      index: updatedIndex,
-    }))
-  }
-
-  const handleDeleteImg = async () => {
-    if (image != null) {
-      await deleteObject(ref(storage, image))
-      setImage('')
-    }
-  }
+  const { image, handleInputImg, handleDeleteImg } = useUploadImage('blog')
+  const {
+    newPostData,
+    index,
+    category,
+    handleInput,
+    handleArrayInput,
+    handleAddButton,
+    handleRemoveIndex,
+    handleRemoveCategory,
+    ResetValueMap,
+    submitNewPost,
+  } = useNewPostValues()
 
   return (
     <div className="flex flex-col gap-20">
@@ -144,9 +53,9 @@ export default function NewPostPage() {
           </div>
           <div className="flex flex-col gap-2">
             {/* 썸네일 */}
-            <label htmlFor="thumbnail">썸네일 이미지</label>
+            <label htmlFor="thumbnailImage">썸네일 이미지</label>
             <input
-              id="thumbnail"
+              id="thumbnailImage"
               placeholder="썸네일 이미지 주소를 입력해주세요"
               value={newPostData.thumbnailImage}
               onChange={handleInput}
@@ -156,13 +65,13 @@ export default function NewPostPage() {
           </div>
           {/* 내용 */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="contents">내용</label>
+            <label htmlFor="content">내용</label>
             <textarea
-              id="contents"
+              id="content"
               placeholder="포스트 내용을 입력해주세요"
               value={newPostData.content}
               className="w-full h-[600px] resize-none outline-green-800 p-2 rounded-md"
-              onChange={handleMarkdown}
+              onChange={handleInput}
             />
           </div>
           {/* 목차 */}
@@ -173,7 +82,7 @@ export default function NewPostPage() {
                 <div
                   key={idx}
                   className="flex px-2 h-[24px] bg-[#276955] rounded-sm text-white text-[14px] items-center cursor-pointer"
-                  onClick={() => handleDeleteIndex(idx)}
+                  onClick={() => handleRemoveIndex(idx)}
                 >
                   <span>{idx}</span>
                 </div>
@@ -186,11 +95,12 @@ export default function NewPostPage() {
                 value={index}
                 className="w-full rounded-md p-2 outline-green-800"
                 type="text"
-                onChange={handleInput}
+                onChange={handleArrayInput}
               />
               <button
+                name="index"
                 className="w-[60px] h-[80%] rounded-lg text-white bg-[#276955]"
-                onClick={handleAddIndex}
+                onClick={handleAddButton}
               >
                 추가
               </button>
@@ -204,7 +114,7 @@ export default function NewPostPage() {
                 <div
                   key={category}
                   className="flex px-2 h-[24px] bg-[#276955] rounded-sm text-white text-[14px] items-center cursor-pointer"
-                  onClick={() => handleDeleteCategory(category)}
+                  onClick={() => handleRemoveCategory(category)}
                 >
                   <span>{category}</span>
                 </div>
@@ -217,11 +127,12 @@ export default function NewPostPage() {
                 value={category}
                 className="w-full rounded-md p-2 outline-green-800"
                 type="text"
-                onChange={handleInput}
+                onChange={handleArrayInput}
               />
               <button
+                name="category"
                 className="w-[60px] h-[80%] rounded-lg text-white bg-[#276955]"
-                onClick={handleAddCategory}
+                onClick={handleAddButton}
               >
                 추가
               </button>
@@ -273,14 +184,13 @@ export default function NewPostPage() {
       <div className="flex gap-8 justify-center">
         <button
           className="w-[80px] h-[32px] bg-red-500 hover:bg-red-400 text-[16px] text-white font-bold rounded-md"
-          onClick={resetNewPostData}
+          onClick={ResetValueMap['all']}
         >
           초기화
         </button>
         <button
           className="w-[80px] h-[32px] bg-[#276955] hover:opacity-80 disabled:opacity-40 text-[16px] text-white font-bold rounded-md"
           onClick={submitNewPost}
-          disabled={possibleSubmit}
         >
           등록하기
         </button>
