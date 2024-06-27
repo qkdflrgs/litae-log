@@ -1,10 +1,19 @@
 'use client'
 
+import useProject from '@hooks/useProject'
+import { updateProject } from '@remote/project'
 import useNewProjectValues from '@hooks/useNewProjectValues'
 import useUploadImage from '@hooks/useUploadImage'
 import Image from 'next/image'
+import { useEffect } from 'react'
 
-export default function NewProjectPage() {
+interface EditProjectPageProps {
+  params: { id: string }
+}
+
+export default function EditProjectPage({ params }: EditProjectPageProps) {
+  const { data } = useProject(params.id)
+
   const {
     newProjectData,
     projectLink,
@@ -14,14 +23,18 @@ export default function NewProjectPage() {
     contentsLink,
     handleObjectInput,
     ResetInputMap,
+    setNewProjectData,
     removeObjectInput,
     handleInput,
     handleAddButton,
     handleAddContentsLink,
     handleRemoveContentsLink,
-    submitNewProject,
   } = useNewProjectValues()
   const { image, handleInputImg, handleDeleteImg } = useUploadImage('project')
+
+  useEffect(() => {
+    if (data) setNewProjectData(data)
+  }, [data])
 
   return (
     <div className="flex flex-col gap-8">
@@ -382,10 +395,10 @@ export default function NewProjectPage() {
         </button>
         <button
           className="w-[80px] h-[32px] bg-[#276955] hover:opacity-80 disabled:opacity-40 text-[16px] text-white font-bold rounded-md"
-          onClick={submitNewProject}
+          onClick={() => updateProject(params.id, newProjectData)}
           disabled={false}
         >
-          등록하기
+          수정하기
         </button>
       </div>
     </div>
