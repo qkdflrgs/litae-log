@@ -5,8 +5,8 @@ import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import React from 'react'
-import usePost from '@/hooks/usePost'
-import transformDate from '@/utils/transformDate'
+import usePost from '@hooks/usePost'
+import transformDate from '@utils/transformDate'
 
 interface BlogDetailPageProps {
   params: { id: string }
