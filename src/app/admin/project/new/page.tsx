@@ -1,135 +1,27 @@
 'use client'
 
-import useNewProject from '@/hooks/useNewProject'
-import useUploadImage from '@/hooks/useUploadImage'
-import { ImageType, LinkType } from '@/model/project'
-import { storage } from '@/remote/firebase'
-import { deleteObject, ref } from 'firebase/storage'
-import { ChangeEvent, useState } from 'react'
+import useNewProjectValues from '@hooks/useNewProjectValues'
+import useUploadImage from '@hooks/useUploadImage'
+import Image from 'next/image'
 
 export default function NewProjectPage() {
   const {
     newProjectData,
-    setNewProjectData,
-    resetNewProjectData,
+    projectLink,
+    summary,
+    skills,
+    contents,
+    contentsLink,
+    handleObjectInput,
+    ResetInputMap,
+    removeObjectInput,
+    handleInput,
+    handleAddButton,
+    handleAddContentsLink,
+    handleRemoveContentsLink,
     submitNewProject,
-  } = useNewProject()
-  const [linkUrl, setLinkUrl] = useState<LinkType>({ name: '', url: '' })
-  const [skill, setSkill] = useState<ImageType>({ name: '', src: '' })
-  const [image, setImage] = useState<string | null>()
-  const { uploadImage } = useUploadImage()
-
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-
-    setNewProjectData((prev) => ({
-      ...prev,
-      [id]: value,
-    }))
-  }
-
-  const handleLinkInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-
-    if (id === 'linkUrlName') {
-      setLinkUrl((prev) => ({
-        ...prev,
-        name: value,
-      }))
-    }
-
-    if (id === 'linkUrlUrl') {
-      setLinkUrl((prev) => ({
-        ...prev,
-        url: value,
-      }))
-    }
-  }
-
-  const handleSkillInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-
-    if (id === 'skillName') {
-      setSkill((prev) => ({
-        ...prev,
-        name: value,
-      }))
-    }
-
-    if (id === 'skillSrc') {
-      setSkill((prev) => ({
-        ...prev,
-        src: value,
-      }))
-    }
-  }
-
-  const handleAddLink = () => {
-    const last = newProjectData.projectLink
-
-    setNewProjectData((prev) => ({
-      ...prev,
-      projectLink: last ? [...last, linkUrl] : [linkUrl],
-    }))
-    setLinkUrl({ name: '', url: '' })
-  }
-
-  const handleAddSkill = () => {
-    const last = newProjectData.skills
-
-    setNewProjectData((prev) => ({
-      ...prev,
-      skills: last ? [...last, skill] : [skill],
-    }))
-    setSkill({ name: '', src: '' })
-  }
-
-  const handleRemoveLink = (name: string) => {
-    const removedLink = newProjectData.projectLink.filter(
-      (link) => link.name !== name,
-    )
-
-    setNewProjectData((prev) => ({
-      ...prev,
-      projectLink: removedLink,
-    }))
-  }
-
-  const handleRemoveSkill = (name: string) => {
-    const removedLink = newProjectData.skills.filter(
-      (link) => link.name !== name,
-    )
-
-    setNewProjectData((prev) => ({
-      ...prev,
-      skills: removedLink,
-    }))
-  }
-
-  const handleStatus = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-
-    setNewProjectData((prev) => ({
-      ...prev,
-      status: value as 'process' | 'done',
-    }))
-  }
-
-  const handleInputImg = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const file = e.target.files[0]
-      const url = await uploadImage('blog', file)
-
-      setImage(url)
-    }
-  }
-
-  const handleDeleteImg = async () => {
-    if (image != null) {
-      await deleteObject(ref(storage, image))
-      setImage('')
-    }
-  }
+  } = useNewProjectValues()
+  const { image, handleInputImg, handleDeleteImg } = useUploadImage('project')
 
   return (
     <div className="flex flex-col gap-8">
@@ -157,41 +49,63 @@ export default function NewProjectPage() {
           type="text"
         />
       </div>
-      {/* 프로젝트 URL */}
+      {/* 썸네일 이미지 */}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="thumbnailImage">썸네일 이미지</label>
+        <input
+          id="thumbnailImage"
+          placeholder="썸네일 이미지를 입력해주세요"
+          value={newProjectData.thumbnailImage}
+          onChange={handleInput}
+          className="rounded-md p-2 outline-green-800"
+          type="text"
+        />
+      </div>
+      {/* 프로젝트 링크 */}
       <div className="flex flex-col gap-2">
         <label htmlFor="linkUrl">프로젝트 링크</label>
         <div className="bg-white min-h-[100px] rounded-md p-2">
-          {newProjectData.projectLink?.map((link) => (
+          {newProjectData.projectLink?.map((item) => (
             <div
-              key={link.name}
-              className="flex gap-4 p-1"
-              onClick={() => handleRemoveLink(link.name)}
+              key={item.name}
+              onClick={() => removeObjectInput('projectLink', item.name)}
+              className="flex flex-col p-2 border rounded-md"
             >
-              <span>{link.name}</span>|<span>{link.url}</span>
+              <div className="flex gap-4">
+                <span className="font-bold">링크 제목</span>
+                <span>{item.name}</span>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-bold">링크 URL</span>
+                <span>{item.url}</span>
+              </div>
             </div>
           ))}
         </div>
         <div className="flex gap-4">
           <input
-            id="linkUrlName"
+            id="projectLink_name"
             placeholder="프로젝트 링크 이름을 입력해주세요"
-            value={linkUrl.name}
-            onChange={handleLinkInput}
+            value={projectLink.name}
+            onChange={handleObjectInput}
             className="w-full rounded-md p-2 outline-green-800"
             type="text"
           />
           <input
-            id="linkUrlUrl"
+            id="projectLink_url"
             placeholder="프로젝트 링크 url을 입력해주세요"
-            value={linkUrl.url}
-            onChange={handleLinkInput}
+            value={projectLink.url}
+            onChange={handleObjectInput}
             className="w-full rounded-md p-2 outline-green-800"
             type="text"
           />
           <button
+            name="projectLink"
             className="w-[160px] bg-green-800 rounded-lg text-white disabled:opacity-40"
-            onClick={handleAddLink}
-            disabled={linkUrl.name.length === 0 || linkUrl.url.length === 0}
+            onClick={handleAddButton}
+            disabled={
+              projectLink.name.length === 0 || projectLink.url.length === 0
+            }
           >
             추가
           </button>
@@ -199,39 +113,49 @@ export default function NewProjectPage() {
       </div>
       {/* 프로젝트 요약 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="linkUrl">기술 스택</label>
+        <label htmlFor="linkUrl">프로젝트 요약</label>
         <div className="bg-white min-h-[100px] overflow-auto rounded-md p-2">
-          {newProjectData.skills?.map((skill) => (
+          {newProjectData.summary?.map((item) => (
             <div
-              key={skill.name}
-              className="flex gap-4 p-1"
-              onClick={() => handleRemoveSkill(skill.name)}
+              key={item.title}
+              onClick={() => removeObjectInput('summary', item.title)}
+              className="flex flex-col p-2 border rounded-md"
             >
-              <span>{skill.name}</span>|<span>{skill.src}</span>
+              <div className="flex gap-4">
+                <span className="font-bold">요약 제목</span>
+                <span>{item.title}</span>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-bold">요약 설명</span>
+                <span>{item.description}</span>
+              </div>
             </div>
           ))}
         </div>
         <div className="flex gap-4">
           <input
-            id="skillName"
-            placeholder="기술 스택 이름을 입력해주세요"
-            value={skill.name}
-            onChange={handleSkillInput}
+            id="summary_title"
+            placeholder="요약 타이틀을 입력해주세요"
+            value={summary.title}
+            onChange={handleObjectInput}
             className="w-full rounded-md p-2 outline-green-800"
             type="text"
           />
           <input
-            id="skillSrc"
-            placeholder="기술 스택 이미지를 입력해주세요"
-            value={skill.src}
-            onChange={handleSkillInput}
+            id="summary_description"
+            placeholder="요약 설명을 입력해주세요"
+            value={summary.description}
+            onChange={handleObjectInput}
             className="w-full rounded-md p-2 outline-green-800"
             type="text"
           />
           <button
+            name="summary"
             className="w-[160px] bg-green-800 rounded-lg text-white disabled:opacity-40"
-            onClick={handleAddSkill}
-            disabled={skill.name.length === 0 || skill.src.length === 0}
+            onClick={handleAddButton}
+            disabled={
+              summary.title.length === 0 || summary.description.length === 0
+            }
           >
             추가
           </button>
@@ -244,60 +168,175 @@ export default function NewProjectPage() {
           {newProjectData.skills?.map((skill) => (
             <div
               key={skill.name}
-              className="flex gap-4 p-1"
-              onClick={() => handleRemoveSkill(skill.name)}
+              onClick={() => removeObjectInput('skills', skill.name)}
+              className="flex flex-col p-2 border rounded-md"
             >
-              <span>{skill.name}</span>|<span>{skill.src}</span>
+              <div className="flex gap-4">
+                <span className="font-bold">기술 스택 이름</span>
+                <span>{skill.name}</span>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-bold">기술 스택 이미지</span>
+                <span>{skill.src}</span>
+              </div>
             </div>
           ))}
         </div>
         <div className="flex gap-4">
           <input
-            id="skillName"
+            id="skills_name"
             placeholder="기술 스택 이름을 입력해주세요"
-            value={skill.name}
-            onChange={handleSkillInput}
+            value={skills.name}
+            onChange={handleObjectInput}
             className="w-full rounded-md p-2 outline-green-800"
             type="text"
           />
           <input
-            id="skillSrc"
+            id="skills_src"
             placeholder="기술 스택 이미지를 입력해주세요"
-            value={skill.src}
-            onChange={handleSkillInput}
+            value={skills.src}
+            onChange={handleObjectInput}
             className="w-full rounded-md p-2 outline-green-800"
             type="text"
           />
           <button
+            name="skills"
             className="w-[160px] bg-green-800 rounded-lg text-white disabled:opacity-40"
-            onClick={handleAddSkill}
-            disabled={skill.name.length === 0 || skill.src.length === 0}
+            onClick={handleAddButton}
+            disabled={skills.name.length === 0 || skills.src.length === 0}
           >
             추가
           </button>
         </div>
       </div>
+      {/* 프로젝트 내용 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="description">내용</label>
+        <label htmlFor="description">프로젝트 내용</label>
+        <div className="bg-white min-h-[200px] max-h-[300px] overflow-y-scroll rounded-md p-2">
+          {newProjectData.contents?.map((contents) => (
+            <div
+              key={contents.title}
+              className="flex flex-col gap-2 px-4 py-2 border rounded-md"
+              onClick={() => removeObjectInput('contents', contents.title)}
+            >
+              <div className="flex gap-4">
+                <span className="font-bold">제목</span>
+                <span>{contents.title}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="font-bold">내용</span>
+                <p>{contents.content}</p>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-bold">이미지 URL</span>
+                <span>{contents.imageUrl}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="font-bold">링크</span>
+                {contents.link.map((item) => (
+                  <div className="flex gap-4">
+                    <span>{item.name}</span>
+                    <span>{item.url}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col gap-2 p-4 bg-white min-h-[100px] max-h-[200px] overflow-y-scroll rounded-md">
+          {contents.link.map((item) => (
+            <div
+              key={item.name}
+              onClick={() => handleRemoveContentsLink(item.name)}
+              className="flex flex-col p-2 border rounded-md"
+            >
+              <div className="flex gap-4">
+                <span className="font-bold">링크 제목</span>
+                <span>{item.name}</span>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-bold">링크 URL</span>
+                <span>{item.url}</span>
+              </div>
+            </div>
+          ))}
+        </div>
         <input
-          id="description"
-          placeholder="프로젝트 설명을 입력해주세요"
-          value={newProjectData.description}
-          onChange={handleInput}
+          id="contents_title"
+          placeholder="컨텐츠 타이틀을 입력해주세요"
+          value={contents.title}
+          onChange={handleObjectInput}
           className="rounded-md p-2 outline-green-800"
           type="text"
         />
+        <input
+          id="contents_content"
+          placeholder="컨텐츠 내용을 입력해주세요"
+          value={contents.content}
+          onChange={handleObjectInput}
+          className="rounded-md p-2 outline-green-800"
+          type="text"
+        />
+        <input
+          id="contents_imageUrl"
+          placeholder="컨텐츠 이미지를 입력해주세요"
+          value={contents.imageUrl}
+          onChange={handleObjectInput}
+          className="rounded-md p-2 outline-green-800"
+          type="text"
+        />
+        <div className="flex gap-4">
+          <input
+            id="contentsLink_name"
+            placeholder="컨텐츠 링크 제목을 입력해주세요"
+            value={contentsLink.name}
+            onChange={handleObjectInput}
+            className="w-full rounded-md p-2 outline-green-800"
+            type="text"
+          />
+          <input
+            id="contentsLink_url"
+            placeholder="컨텐츠 링크 URL을 입력해주세요"
+            value={contentsLink.url}
+            onChange={handleObjectInput}
+            className="w-full rounded-md p-2 outline-green-800"
+            type="text"
+          />
+          <button
+            className="w-[160px] bg-green-800 rounded-lg text-white disabled:opacity-40"
+            onClick={handleAddContentsLink}
+            disabled={
+              contentsLink.name.length === 0 || contentsLink.url.length === 0
+            }
+          >
+            링크 추가
+          </button>
+        </div>
+        <button
+          name="contents"
+          onClick={handleAddButton}
+          className="w-full h-[40px] bg-green-800 rounded-lg text-white disabled:opacity-40"
+        >
+          컨텐츠 추가
+        </button>
       </div>
       {/* 이미지 추가 */}
       <div className="flex flex-col gap-2">
         <label htmlFor="image">썸네일 이미지</label>
-        <div className="w-full min-h-[36px] bg-white rounded-md">
-          <span>{image ? image : ''}</span>
+        <div className="flex gap-4 p-4 w-full min-h-[60px] bg-white rounded-md">
+          {image && (
+            <>
+              <div className="w-[100px] relative">
+                <Image src={image ?? ''} alt="미리보기 이미지" fill />
+              </div>
+              <span>{image ? image : ''}</span>
+            </>
+          )}
         </div>
         <div className="flex justify-between">
           <input id="image" type="file" onChange={handleInputImg} />
           <button
-            className="px-4 py-1 bg-orange-500 text-white rounded-lg"
+            className="px-4 py-1 bg-orange-500 disabled:bg-orange-300 text-white rounded-lg"
             onClick={handleDeleteImg}
             disabled={!image}
           >
@@ -311,18 +350,20 @@ export default function NewProjectPage() {
           <label>
             <input
               type="radio"
-              name="project_status"
+              id="status_process"
+              name="status"
               value="process"
-              onChange={handleStatus}
+              onChange={handleInput}
             />
             진행중
           </label>
           <label>
             <input
               type="radio"
-              name="project_status"
+              id="status_done"
+              name="status"
               value="done"
-              onChange={handleStatus}
+              onChange={handleInput}
             />
             완료
           </label>
@@ -335,14 +376,14 @@ export default function NewProjectPage() {
       <div className="flex gap-8 justify-center">
         <button
           className="w-[80px] h-[32px] bg-red-500 hover:bg-red-400 text-[16px] text-white font-bold rounded-md"
-          onClick={resetNewProjectData}
+          onClick={ResetInputMap['all']}
         >
           초기화
         </button>
         <button
           className="w-[80px] h-[32px] bg-[#276955] hover:opacity-80 disabled:opacity-40 text-[16px] text-white font-bold rounded-md"
           onClick={submitNewProject}
-          disabled={true}
+          disabled={false}
         >
           등록하기
         </button>
