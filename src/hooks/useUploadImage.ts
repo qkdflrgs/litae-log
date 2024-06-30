@@ -1,9 +1,33 @@
-import { storage } from '@/remote/firebase'
+import { storage } from '@remote/firebase'
 import { v4 as uuidv4 } from 'uuid'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from 'firebase/storage'
+import { ChangeEvent, useState } from 'react'
 
-export default function useUploadImage() {
-  const uploadImage = async (type: 'blog' | 'project', file: File) => {
+export default function useUploadImage(type: 'blog' | 'project') {
+  const [image, setImage] = useState<string | null>()
+
+  const handleInputImg = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0]
+      const url = await uploadImage(file)
+
+      setImage(url)
+    }
+  }
+
+  const handleDeleteImg = async () => {
+    if (image != null) {
+      await deleteObject(ref(storage, image))
+      setImage('')
+    }
+  }
+
+  const uploadImage = async (file: File) => {
     const storageRef = ref(storage, `${type}_images/${uuidv4()}`)
     try {
       const snapshot = await uploadBytes(storageRef, file)
@@ -16,5 +40,5 @@ export default function useUploadImage() {
     }
   }
 
-  return { uploadImage }
+  return { image, handleInputImg, handleDeleteImg }
 }
