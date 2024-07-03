@@ -7,6 +7,8 @@ import {
   query,
   updateDoc,
   limit,
+  where,
+  deleteDoc,
 } from 'firebase/firestore'
 import { store } from './firebase'
 import { COLLECTION } from '@constants/collection'
@@ -45,4 +47,33 @@ export async function updatePost(id: string, updateData: Partial<Post>) {
 
   await updateDoc(postRef, updateData)
   alert('글이 수정되었습니다')
+}
+
+export async function getRelatedPosts(id: string, categories: string[]) {
+  const relatedQuery = query(
+    collection(store, COLLECTION.BLOG),
+    where('category', 'array-contains-any', categories),
+    where('id', '!=', id),
+    limit(2),
+  )
+
+  const relatedSnapshot = await getDocs(relatedQuery)
+
+  const relatedPosts = relatedSnapshot.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ...doc.data(),
+      }) as Post,
+  )
+
+  return relatedPosts
+}
+
+export async function deletePost(id: string) {
+  const isDelete = confirm('해당 포스트를 정말 삭제하시겠습니까?')
+
+  if (isDelete) {
+    await deleteDoc(doc(store, COLLECTION.BLOG, id))
+  }
 }
