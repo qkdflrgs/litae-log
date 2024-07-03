@@ -50,7 +50,7 @@ export async function updateProject(id: string, updateData: Partial<Project>) {
 }
 
 export async function deleteProject(id: string) {
-  const isDelete = confirm('해당 포스트를 정말 삭제하시겠습니까?')
+  const isDelete = confirm('해당 프로젝트를 정말 삭제하시겠습니까?')
 
   if (isDelete) {
     await deleteDoc(doc(store, COLLECTION.PROJECT, id))
