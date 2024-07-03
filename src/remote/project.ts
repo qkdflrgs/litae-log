@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -46,4 +47,12 @@ export async function updateProject(id: string, updateData: Partial<Project>) {
 
   await updateDoc(projectRef, updateData)
   alert('프로젝트가 수정되었습니다')
+}
+
+export async function deleteProject(id: string) {
+  const isDelete = confirm('해당 포스트를 정말 삭제하시겠습니까?')
+
+  if (isDelete) {
+    await deleteDoc(doc(store, COLLECTION.PROJECT, id))
+  }
 }
