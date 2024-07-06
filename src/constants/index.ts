@@ -1,0 +1,3 @@
+export const NUMBER_OF_RECENT_POSTS = 3
+export const NUMBER_OF_RECENT_PROJECTS = 3
+export const NUMBER_OF_RELATED_POSTS = 2
