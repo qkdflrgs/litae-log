@@ -6,7 +6,7 @@ import transformDate from '@utils/transformDate'
 import Link from 'next/link'
 
 export default function BlogAdminPage() {
-  const { data: posts } = usePosts()
+  const { data: posts } = usePosts('all')
   return (
     <div className="flex flex-col gap-8">
       <div className="flex justify-end">
