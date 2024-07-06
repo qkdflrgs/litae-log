@@ -2,14 +2,13 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import LightIcon from '/public/svg/light.svg'
-import MoonIcon from '/public/svg/moon.svg'
 import MenuIcon from '/public/svg/menu.svg'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Icon from './Icon'
+
 import useDarkMode from '@/hooks/useDarkMode'
 import DarkModeButton from './ThemeButton'
+import Icon from './Icon'
 
 export default function Header() {
   const router = useRouter()
