@@ -13,15 +13,37 @@ import {
 import { store } from './firebase'
 import { COLLECTION } from '@constants/collection'
 import { Post } from '@model/blog'
+import { NUMBER_OF_RECENT_POSTS, NUMBER_OF_RELATED_POSTS } from '@/constants'
 
-export async function getPosts(limitNum?: number) {
-  const postsQuery = limitNum
-    ? query(
-        collection(store, COLLECTION.BLOG),
-        orderBy('createdAt', 'desc'),
-        limit(limitNum),
-      )
-    : query(collection(store, COLLECTION.BLOG), orderBy('createdAt', 'desc'))
+export async function getPosts(category: string) {
+  const postsQuery =
+    category === 'all'
+      ? query(collection(store, COLLECTION.BLOG), orderBy('createdAt', 'desc'))
+      : query(
+          collection(store, COLLECTION.BLOG),
+          where('category', 'array-contains', category),
+        )
+
+  const postsSnapshot = await getDocs(postsQuery)
+
+  const posts = postsSnapshot.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ...doc.data(),
+      }) as Post,
+  )
+
+  return posts
+}
+
+export async function getRecentPosts() {
+  const postsQuery = query(
+    collection(store, COLLECTION.BLOG),
+    orderBy('createdAt', 'desc'),
+    limit(NUMBER_OF_RECENT_POSTS),
+  )
+
   const postsSnapshot = await getDocs(postsQuery)
 
   const posts = postsSnapshot.docs.map(
@@ -53,8 +75,7 @@ export async function getRelatedPosts(id: string, categories: string[]) {
   const relatedQuery = query(
     collection(store, COLLECTION.BLOG),
     where('category', 'array-contains-any', categories),
-    where('id', '!=', id),
-    limit(2),
+    limit(3),
   )
 
   const relatedSnapshot = await getDocs(relatedQuery)
@@ -67,7 +88,11 @@ export async function getRelatedPosts(id: string, categories: string[]) {
       }) as Post,
   )
 
-  return relatedPosts
+  const filteredPosts = relatedPosts.filter((post) => post.id !== id)
+
+  if (filteredPosts.length > NUMBER_OF_RELATED_POSTS) filteredPosts.splice(2, 1)
+
+  return filteredPosts
 }
 
 export async function deletePost(id: string) {
