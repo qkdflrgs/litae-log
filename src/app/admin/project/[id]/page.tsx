@@ -18,9 +18,9 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
     newProjectData,
     projectLink,
     summary,
-    skills,
     contents,
     contentsLink,
+    skill,
     handleObjectInput,
     ResetInputMap,
     setNewProjectData,
@@ -29,6 +29,7 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
     handleAddButton,
     handleAddContentsLink,
     handleRemoveContentsLink,
+    handleDeleteSkill,
   } = useNewProjectValues()
   const { image, handleInputImg, handleDeleteImg } = useUploadImage('project')
 
@@ -180,18 +181,11 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
         <div className="bg-white min-h-[100px] overflow-auto rounded-md p-2">
           {newProjectData.skills?.map((skill) => (
             <div
-              key={skill.name}
-              onClick={() => removeObjectInput('skills', skill.name)}
+              key={skill}
+              onClick={() => handleDeleteSkill(skill)}
               className="flex flex-col p-2 border rounded-md"
             >
-              <div className="flex gap-4">
-                <span className="font-bold">기술 스택 이름</span>
-                <span>{skill.name}</span>
-              </div>
-              <div className="flex gap-4">
-                <span className="font-bold">기술 스택 이미지</span>
-                <span>{skill.src}</span>
-              </div>
+              {skill}
             </div>
           ))}
         </div>
@@ -199,15 +193,7 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
           <input
             id="skills_name"
             placeholder="기술 스택 이름을 입력해주세요"
-            value={skills.name}
-            onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
-            type="text"
-          />
-          <input
-            id="skills_src"
-            placeholder="기술 스택 이미지를 입력해주세요"
-            value={skills.src}
+            value={skill}
             onChange={handleObjectInput}
             className="w-full rounded-md p-2 outline-green-800"
             type="text"
@@ -216,7 +202,7 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
             name="skills"
             className="w-[160px] bg-green-800 rounded-lg text-white disabled:opacity-40"
             onClick={handleAddButton}
-            disabled={skills.name.length === 0 || skills.src.length === 0}
+            disabled={skill.length === 0}
           >
             추가
           </button>
