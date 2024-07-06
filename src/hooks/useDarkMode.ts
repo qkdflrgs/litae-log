@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react'
 
 export default function useDarkMode() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const theme = localStorage.getItem('litae-theme')
-    if (theme === null) {
-      return (
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      )
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const theme = localStorage.getItem('litae-theme')
+      if (theme !== null) {
+        return theme === 'dark'
+      } else if (window.matchMedia) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+      }
     }
-    return theme === 'dark'
+    return false
   })
 
   const toggleDarkMode = () => {
