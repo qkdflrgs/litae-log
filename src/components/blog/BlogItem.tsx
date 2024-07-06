@@ -1,6 +1,9 @@
 import Link from 'next/link'
+import Tag from '../shared/Tag'
+import transformDate from '@/utils/transformDate'
 
 interface BlogItemProps {
+  id: string
   title: string
   description: string
   thumbnailImage: string
@@ -9,6 +12,7 @@ interface BlogItemProps {
 }
 
 export default function BlogItem({
+  id,
   title,
   description,
   thumbnailImage,
@@ -16,34 +20,28 @@ export default function BlogItem({
   category,
 }: BlogItemProps) {
   return (
-    <li className="list-none flex flex-col gap-4">
-      <Link href="" className="flex flex-col gap-8 hover:opacity-60">
+    <li className="list-none flex flex-col justify-between p-5 gap-2 bg-white dark:bg-dark-dp06 rounded-xl hover:-translate-y-2">
+      <Link
+        href={`/blog/${id}`}
+        className="flex flex-col gap-4 hover:opacity-60"
+      >
         <img
-          src={thumbnailImage}
+          src={!thumbnailImage ? 'default.webp' : thumbnailImage}
           alt="이미지"
-          className="w-full] object-cover"
+          className="w-full] object-cover rounded-xl h-[240px]"
         />
-        <div className="flex flex-col gap-3">
-          <div className="text-[#6941C6] text-[14px] font-semibold">
-            {createdAt}
-          </div>
-          <div className="text-[24px] font-semibold">{title}</div>
-          <div className="text-[#667085] text-[16px] hidden sm:block">
-            {description}
-          </div>
+        <div className="flex gap-[8px]">
+          {category.map((tag) => {
+            return <Tag key={tag} type="blog" label={tag} />
+          })}
         </div>
+        <div className="text-[18px] font-medium dark:text-white">{title}</div>
       </Link>
-      <div className="flex gap-[8px]">
-        {category.map((tag) => {
-          return (
-            <div
-              id={tag}
-              className="px-[10px] py-[2px] text-[12px] font-medium rounded-2xl bg-purple-200 text-purple-700"
-            >
-              {tag}
-            </div>
-          )
-        })}
+      <div className="flex justify-between">
+        <span className="text-[12px] text-gray-400">
+          {transformDate(createdAt)}
+        </span>
+        <span className="text-[12px] text-gray-400"></span>
       </div>
     </li>
   )
