@@ -1,3 +1,5 @@
+import { SkillType } from '@/components/shared/SkillLogo'
+
 export type LinkType = { name: string; url: string }
 export type ImageType = { name: string; src: string }
 export type SummaryType = { title: string; description: string }
@@ -15,7 +17,7 @@ export interface Project {
   thumbnailImage: string
   projectLink: LinkType[]
   summary: SummaryType[]
-  skills: ImageType[]
+  skills: SkillType[]
   contents: ContentsType[]
   images: ImageType[]
   status: 'process' | 'done'
