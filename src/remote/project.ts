@@ -12,15 +12,33 @@ import {
 import { store } from './firebase'
 import { COLLECTION } from '@constants/collection'
 import { Project } from '@model/project'
+import { NUMBER_OF_RECENT_PROJECTS } from '@/constants'
 
-export async function getProjects(limitNum?: number) {
-  const projectsQuery = limitNum
-    ? query(
-        collection(store, COLLECTION.PROJECT),
-        orderBy('startedAt', 'desc'),
-        limit(limitNum),
-      )
-    : query(collection(store, COLLECTION.PROJECT), orderBy('startedAt', 'desc'))
+export async function getProjects() {
+  const projectsQuery = query(
+    collection(store, COLLECTION.PROJECT),
+    orderBy('startedAt', 'desc'),
+  )
+
+  const projectsSnapshot = await getDocs(projectsQuery)
+
+  const projects = projectsSnapshot.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ...doc.data(),
+      }) as Project,
+  )
+
+  return projects
+}
+
+export async function getRecentProjects() {
+  const projectsQuery = query(
+    collection(store, COLLECTION.PROJECT),
+    orderBy('startedAt', 'desc'),
+    limit(NUMBER_OF_RECENT_PROJECTS),
+  )
 
   const projectsSnapshot = await getDocs(projectsQuery)
 
