@@ -3,12 +3,9 @@
 import { useEffect, useState } from 'react'
 
 export default function useDarkMode() {
-  const [darkMode, setDarkMode] = useState<boolean>(false)
+  const [darkMode, setDarkMode] = useState<boolean>(true)
 
   const toggleDarkMode = () => {
-    darkMode
-      ? localStorage.setItem('litae-theme', 'light')
-      : localStorage.setItem('litae-theme', 'dark')
     setDarkMode(!darkMode)
   }
 
