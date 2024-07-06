@@ -9,7 +9,7 @@
 }
 
 @font-face {
-  font-family: 'SUIT-Regular';
+  font-family: 'SUIT-Regular4';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2')
     format('woff2');
   font-weight: normal;
@@ -17,12 +17,21 @@
 }
 
 body {
-  font-family: 'SUIT-Regular';
+  font-family: 'SUIT-Regular', sans-serif;
 }
 
 .blog-post {
   h1 {
     @apply text-[24px] font-bold;
+  }
+  h2 {
+    @apply text-[24px] font-bold;
+  }
+  strong {
+    @apply font-bold;
+  }
+  p {
+    @apply py-2;
   }
   textarea {
     height: 0;
