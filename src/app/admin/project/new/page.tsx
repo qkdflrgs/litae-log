@@ -9,7 +9,7 @@ export default function NewProjectPage() {
     newProjectData,
     projectLink,
     summary,
-    skills,
+    skill,
     contents,
     contentsLink,
     handleObjectInput,
@@ -17,8 +17,11 @@ export default function NewProjectPage() {
     removeObjectInput,
     handleInput,
     handleAddButton,
+    handleSkillInput,
     handleAddContentsLink,
+    handleAddSkill,
     handleRemoveContentsLink,
+    handleDeleteSkill,
     submitNewProject,
   } = useNewProjectValues()
   const { image, handleInputImg, handleDeleteImg } = useUploadImage('project')
@@ -163,47 +166,31 @@ export default function NewProjectPage() {
       </div>
       {/* 기술 스택 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="linkUrl">기술 스택</label>
-        <div className="bg-white min-h-[100px] overflow-auto rounded-md p-2">
+        <label htmlFor="skill">기술 스택</label>
+        <div className="flex gap-4 min-h-16 bg-white overflow-auto rounded-md p-2">
           {newProjectData.skills?.map((skill) => (
             <div
-              key={skill.name}
-              onClick={() => removeObjectInput('skills', skill.name)}
+              key={skill}
+              onClick={() => handleDeleteSkill(skill)}
               className="flex flex-col p-2 border rounded-md"
             >
-              <div className="flex gap-4">
-                <span className="font-bold">기술 스택 이름</span>
-                <span>{skill.name}</span>
-              </div>
-              <div className="flex gap-4">
-                <span className="font-bold">기술 스택 이미지</span>
-                <span>{skill.src}</span>
-              </div>
+              {skill}
             </div>
           ))}
         </div>
         <div className="flex gap-4">
-          <input
-            id="skills_name"
-            placeholder="기술 스택 이름을 입력해주세요"
-            value={skills.name}
-            onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
-            type="text"
-          />
-          <input
-            id="skills_src"
-            placeholder="기술 스택 이미지를 입력해주세요"
-            value={skills.src}
-            onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
-            type="text"
-          />
+          <select id="skill" onChange={handleSkillInput}>
+            <option value="html">html</option>
+            <option value="css">css</option>
+            <option value="react">react</option>
+            <option value="typescript">typescript</option>
+            <option value="nextjs">nextjs</option>
+          </select>
           <button
-            name="skills"
+            name="skill"
             className="w-[160px] bg-green-800 rounded-lg text-white disabled:opacity-40"
-            onClick={handleAddButton}
-            disabled={skills.name.length === 0 || skills.src.length === 0}
+            onClick={handleAddSkill}
+            disabled={skill.length === 0}
           >
             추가
           </button>
