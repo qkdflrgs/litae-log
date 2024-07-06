@@ -1,11 +1,11 @@
 import { getProjects } from '@remote/project'
 import { useQuery } from '@tanstack/react-query'
 
-export default function useProjects(limit?: number) {
-  const { data } = useQuery({
+export default function useProjects() {
+  const { data, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => getProjects(limit),
+    queryFn: () => getProjects(),
   })
 
-  return { data }
+  return { data, isLoading }
 }

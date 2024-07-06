@@ -1,3 +1,4 @@
+import { SkillType } from '@/components/shared/SkillLogo'
 import { COLLECTION } from '@constants/collection'
 import {
   ContentsType,
@@ -31,10 +32,7 @@ export default function useNewProjectValues() {
     title: '',
     description: '',
   })
-  const [skills, setSkills] = useState<ImageType>({
-    name: '',
-    src: '',
-  })
+  const [skill, setSkill] = useState<SkillType>('html')
   const [contents, setContents] = useState<ContentsType>({
     title: '',
     content: '',
@@ -62,18 +60,17 @@ export default function useNewProjectValues() {
       }),
     projectLink: () => setProjectLink({ name: '', url: '' }),
     summary: () => setSummary({ title: '', description: '' }),
-    skills: () => setSkills({ name: '', src: '' }),
     contents: () =>
       setContents({ title: '', content: '', imageUrl: '', link: [] }),
     contentsLink: () => setContentsLink({ name: '', url: '' }),
   }
 
   const removeObjectInput = (
-    name: 'projectLink' | 'summary' | 'skills' | 'contents',
+    name: 'projectLink' | 'summary' | 'contents',
     value: string,
   ) => {
     const removed =
-      name === 'projectLink' || name === 'skills'
+      name === 'projectLink'
         ? newProjectData[name].filter((item) => item.name !== value)
         : newProjectData[name].filter((item) => item.title !== value)
 
@@ -81,6 +78,12 @@ export default function useNewProjectValues() {
       ...prev,
       [name]: removed,
     }))
+  }
+
+  const handleSkillInput = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target
+
+    setSkill(value as SkillType)
   }
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +94,13 @@ export default function useNewProjectValues() {
       setNewProjectData((prev) => ({
         ...prev,
         [name]: value as 'process' | 'done',
+      }))
+    } else if (name === 'startedAt') {
+      const dateObject = new Date(value)
+
+      setNewProjectData((prev) => ({
+        ...prev,
+        [id]: dateObject.getTime(),
       }))
     } else {
       setNewProjectData((prev) => ({
@@ -118,13 +128,6 @@ export default function useNewProjectValues() {
       }))
     }
 
-    if (type === 'skills') {
-      setSkills((prev) => ({
-        ...prev,
-        [key]: value,
-      }))
-    }
-
     if (type === 'contents') {
       setContents((prev) => ({
         ...prev,
@@ -143,7 +146,6 @@ export default function useNewProjectValues() {
   const DataMap: { [key: string]: any } = {
     projectLink: projectLink,
     summary: summary,
-    skills: skills,
     contents: contents,
   }
 
@@ -173,6 +175,13 @@ export default function useNewProjectValues() {
     ResetInputMap['contentsLink']()
   }
 
+  const handleAddSkill = () => {
+    setNewProjectData((prev) => ({
+      ...prev,
+      skills: [...newProjectData.skills, skill],
+    }))
+  }
+
   const handleRemoveContentsLink = (name: string) => {
     const removed = contents.link.filter((item) => item.name !== name)
 
@@ -180,10 +189,6 @@ export default function useNewProjectValues() {
       ...prev,
       link: removed,
     }))
-  }
-
-  const handleStatusInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
   }
 
   const submitNewProject = async () => {
@@ -196,21 +201,33 @@ export default function useNewProjectValues() {
     await addDoc(collection(store, COLLECTION.PROJECT), projectData)
   }
 
+  const handleDeleteSkill = (name: SkillType) => {
+    const filtered = newProjectData.skills.filter((skill) => skill !== name)
+
+    setNewProjectData((prev) => ({
+      ...prev,
+      skills: filtered,
+    }))
+  }
+
   return {
     newProjectData,
     projectLink,
     summary,
-    skills,
+    skill,
     contents,
     contentsLink,
     setNewProjectData,
     handleObjectInput,
     removeObjectInput,
+    handleSkillInput,
     ResetInputMap,
     handleInput,
     handleAddButton,
+    handleAddSkill,
     handleAddContentsLink,
     handleRemoveContentsLink,
+    handleDeleteSkill,
     submitNewProject,
   }
 }
