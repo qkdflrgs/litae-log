@@ -175,7 +175,7 @@ export default function AboutPage() {
                   </p>
                 </div>
                 <div className="flex items-end">
-                  <li className="text-gray-500">2024. 02 - 진행중</li>
+                  <li className="text-gray-500">2023. 10 - 2023. 11</li>
                 </div>
               </div>
               <div className="flex justify-between border-b-2 pb-4 dark:border-dark-dp24">
@@ -192,7 +192,7 @@ export default function AboutPage() {
                   </p>
                 </div>
                 <div className="flex items-end">
-                  <li className="text-gray-500">2024. 02 - 진행중</li>
+                  <li className="text-gray-500">2023. 08 - 2023. 10</li>
                 </div>
               </div>
               <div className="flex justify-between border-b-2 pb-4 dark:border-dark-dp24">
@@ -209,7 +209,7 @@ export default function AboutPage() {
                   </p>
                 </div>
                 <div className="flex items-end">
-                  <li className="text-gray-500">2024. 02 - 진행중</li>
+                  <li className="text-gray-500">2023. 07 - 2023. 08</li>
                 </div>
               </div>
             </div>
