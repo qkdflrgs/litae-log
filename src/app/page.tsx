@@ -13,11 +13,11 @@ export default function Home() {
     <div className="flex flex-col gap-[200px]">
       <div className="lg:h-[400px] flex flex-col-reverse lg:flex-row lg:justify-between gap-4 lg:gap-0">
         <div className="flex flex-col justify-end">
-          <span className="text-[36px] lg:text-[48px] font-bold text-light-primary dark:text-white">
-            프론트엔드 개발자
+          <span className="text-[24px] lg:text-[28px] font-bold text-light-primary dark:text-white text-end lg:text-start">
+            FRONT-END DEVELOPER
           </span>
-          <span className="text-[36px] lg:text-[48px] font-bold text-light-primary dark:text-white">
-            이태곤입니다
+          <span className="text-[20px] lg:text-[24px] font-bold text-light-primary dark:text-white text-end lg:text-start">
+            LEE TAEGON
           </span>
         </div>
         <div className="w-full h-[300px] lg:h-full lg:w-[400px] relative">
@@ -31,7 +31,7 @@ export default function Home() {
       </div>
       <section className="flex flex-col items-center gap-[40px]">
         <h3 className="text-[32px] sm:text-[42px] text-light-primary dark:text-dark-primary font-bold">
-          Recent Posts
+          Recommendation Posts
         </h3>
         {posts && <RecentPosts posts={posts} />}
         <Link

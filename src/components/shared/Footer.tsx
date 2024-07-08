@@ -44,7 +44,10 @@ export default function Footer() {
           <Link href="https://github.com/qkdflrgs" target="_blank">
             <GithubIcon className="w-8 lg:w-10 fill-black dark:fill-dark-primary" />
           </Link>
-          <Link href="https://github.com/qkdflrgs" target="_blank">
+          <Link
+            href="https://www.linkedin.com/in/%ED%83%9C%EA%B3%A4-%EC%9D%B4-10150b23a/"
+            target="_blank"
+          >
             <LinkedinIcon className="w-8 lg:w-10 fill-black dark:fill-dark-primary" />
           </Link>
         </div>

@@ -33,7 +33,9 @@ export default function ProjectItem({
         <span className="text-[16px] lg:text-[28px] text-white color-gray-600 font-bold">
           {title}
         </span>
-        <p className="text-[12px] text-gray-200 font-bold">{description}</p>
+        <p className="text-[12px] text-gray-200 font-bold line-clamp-3">
+          {description}
+        </p>
       </div>
     </Link>
   )

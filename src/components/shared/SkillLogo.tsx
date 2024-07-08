@@ -8,6 +8,9 @@ import EmotionLogo from '/public/svg/emotion.svg'
 import StyledComponentsLogo from '/public/svg/styledComponents.svg'
 import FirebaseLogo from '/public/svg/firebase.svg'
 import ReactQueryLogo from '/public/svg/reactQuery.svg'
+import FlutterLogo from '/public/svg/flutter.svg'
+import PrismaLogo from '/public/svg/prisma.svg'
+import RecoilLogo from '/public/svg/recoil.svg'
 
 const SkillMap = {
   html: {
@@ -50,6 +53,18 @@ const SkillMap = {
     logo: StyledComponentsLogo,
     name: 'StyledComponents',
   },
+  flutter: {
+    logo: FlutterLogo,
+    name: 'Flutter',
+  },
+  prisma: {
+    logo: PrismaLogo,
+    name: 'Prisma',
+  },
+  recoil: {
+    logo: RecoilLogo,
+    name: 'Recoil',
+  },
 }
 
 export type SkillType = keyof typeof SkillMap
@@ -64,9 +79,11 @@ export default function SkillLogo({ type }: SkillLogoProps) {
   return (
     <div className="flex gap-2 justify-center items-center select-none">
       <LogoComponent
-        className={`h-[40px] w-[40px] ${type === 'nextjs' && 'fill-black dark:fill-gray-300'} ${type === 'typescript' && 'fill-blue-500'}`}
+        className={`h-[40px] w-[40px] ${type === 'nextjs' && 'fill-black dark:fill-gray-300'} ${type === 'typescript' && 'fill-blue-500'} ${type === 'prisma' && 'dark:fill-white'}`}
       />
-      <span className="text-[12px] sm:text-[20px] font-semibold text-dark-dp12 dark:text-gray-300">
+      <span
+        className={`text-[12px] font-semibold text-dark-dp12 dark:text-gray-300 ${type === 'styledComponents' ? 'sm:text-[14px]' : 'sm:text-[20px]'}`}
+      >
         {name}
       </span>
     </div>
