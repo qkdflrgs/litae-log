@@ -1,5 +1,6 @@
 'use client'
 
+import { SkillMap } from '@/components/shared/SkillLogo'
 import useNewProjectValues from '@hooks/useNewProjectValues'
 import useUploadImage from '@hooks/useUploadImage'
 import Image from 'next/image'
@@ -30,44 +31,52 @@ export default function NewProjectPage() {
     <div className="flex flex-col gap-8">
       {/* 제목 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="title">제목</label>
+        <label htmlFor="title" className="dark:text-white">
+          제목
+        </label>
         <input
           id="title"
           placeholder="프로젝트 제목을 입력해주세요"
           value={newProjectData.title}
           onChange={handleInput}
-          className="rounded-md p-2 outline-green-800"
+          className="rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
           type="text"
         />
       </div>
       {/* 설명 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="description">설명</label>
+        <label htmlFor="description" className="dark:text-white">
+          설명
+        </label>
         <input
           id="description"
           placeholder="프로젝트 설명을 입력해주세요"
           value={newProjectData.description}
           onChange={handleInput}
-          className="rounded-md p-2 outline-green-800"
+          className="rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
           type="text"
         />
       </div>
       {/* 썸네일 이미지 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="thumbnailImage">썸네일 이미지</label>
+        <label htmlFor="thumbnailImage" className="text-white">
+          썸네일 이미지
+        </label>
         <input
           id="thumbnailImage"
           placeholder="썸네일 이미지를 입력해주세요"
           value={newProjectData.thumbnailImage}
           onChange={handleInput}
-          className="rounded-md p-2 outline-green-800"
+          className="rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
           type="text"
         />
       </div>
       {/* 프로젝트 링크 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="linkUrl">프로젝트 링크</label>
-        <div className="bg-white min-h-[100px] rounded-md p-2">
+        <label htmlFor="projectLink_name" className="text-white">
+          프로젝트 링크
+        </label>
+        <div className="bg-white dark:bg-dark-dp12 min-h-[100px] rounded-md p-2 dark:text-white">
           {newProjectData.projectLink?.map((item) => (
             <div
               key={item.name}
@@ -91,7 +100,7 @@ export default function NewProjectPage() {
             placeholder="프로젝트 링크 이름을 입력해주세요"
             value={projectLink.name}
             onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
+            className="w-full rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
             type="text"
           />
           <input
@@ -99,7 +108,7 @@ export default function NewProjectPage() {
             placeholder="프로젝트 링크 url을 입력해주세요"
             value={projectLink.url}
             onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
+            className="w-full rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
             type="text"
           />
           <button
@@ -116,8 +125,10 @@ export default function NewProjectPage() {
       </div>
       {/* 프로젝트 요약 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="linkUrl">프로젝트 요약</label>
-        <div className="bg-white min-h-[100px] overflow-auto rounded-md p-2">
+        <label htmlFor="linkUrl" className="text-white">
+          프로젝트 요약
+        </label>
+        <div className="bg-white dark:bg-dark-dp12 min-h-[100px] overflow-auto rounded-md p-2 dark:text-white">
           {newProjectData.summary?.map((item) => (
             <div
               key={item.title}
@@ -141,7 +152,7 @@ export default function NewProjectPage() {
             placeholder="요약 타이틀을 입력해주세요"
             value={summary.title}
             onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
+            className="w-full rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
             type="text"
           />
           <input
@@ -149,7 +160,7 @@ export default function NewProjectPage() {
             placeholder="요약 설명을 입력해주세요"
             value={summary.description}
             onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
+            className="w-full rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
             type="text"
           />
           <button
@@ -166,8 +177,10 @@ export default function NewProjectPage() {
       </div>
       {/* 기술 스택 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="skill">기술 스택</label>
-        <div className="flex gap-4 min-h-16 bg-white overflow-auto rounded-md p-2">
+        <label htmlFor="skill" className="text-white">
+          기술 스택
+        </label>
+        <div className="flex gap-4 min-h-16 bg-white dark:bg-dark-dp12 overflow-auto rounded-md p-2 dark:text-white">
           {newProjectData.skills?.map((skill) => (
             <div
               key={skill}
@@ -179,16 +192,18 @@ export default function NewProjectPage() {
           ))}
         </div>
         <div className="flex gap-4">
-          <select id="skill" onChange={handleSkillInput}>
-            <option value="html">html</option>
-            <option value="css">css</option>
-            <option value="react">react</option>
-            <option value="typescript">typescript</option>
-            <option value="nextjs">nextjs</option>
+          <select
+            id="skill"
+            onChange={handleSkillInput}
+            className="dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
+          >
+            {Object.keys(SkillMap).map((skill) => (
+              <option value={skill}>{skill}</option>
+            ))}
           </select>
           <button
             name="skill"
-            className="w-[160px] bg-green-800 rounded-lg text-white disabled:opacity-40"
+            className="w-[100px] h-[30px] bg-green-800 rounded-lg text-white disabled:opacity-40"
             onClick={handleAddSkill}
             disabled={skill.length === 0}
           >
@@ -198,8 +213,10 @@ export default function NewProjectPage() {
       </div>
       {/* 프로젝트 내용 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="description">프로젝트 내용</label>
-        <div className="bg-white min-h-[200px] max-h-[300px] overflow-y-scroll rounded-md p-2">
+        <label htmlFor="description" className="text-white">
+          프로젝트 내용
+        </label>
+        <div className="bg-white dark:bg-dark-dp12 dark:text-white min-h-[200px] max-h-[300px] overflow-y-scroll rounded-md p-2">
           {newProjectData.contents?.map((contents) => (
             <div
               key={contents.title}
@@ -230,7 +247,7 @@ export default function NewProjectPage() {
             </div>
           ))}
         </div>
-        <div className="flex flex-col gap-2 p-4 bg-white min-h-[100px] max-h-[200px] overflow-y-scroll rounded-md">
+        <div className="flex flex-col gap-2 p-4 bg-white dark:bg-dark-dp12 dark:text-white min-h-[100px] max-h-[200px] overflow-y-scroll rounded-md">
           {contents.link.map((item) => (
             <div
               key={item.name}
@@ -253,7 +270,7 @@ export default function NewProjectPage() {
           placeholder="컨텐츠 타이틀을 입력해주세요"
           value={contents.title}
           onChange={handleObjectInput}
-          className="rounded-md p-2 outline-green-800"
+          className="rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
           type="text"
         />
         <input
@@ -261,7 +278,7 @@ export default function NewProjectPage() {
           placeholder="컨텐츠 내용을 입력해주세요"
           value={contents.content}
           onChange={handleObjectInput}
-          className="rounded-md p-2 outline-green-800"
+          className="rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
           type="text"
         />
         <input
@@ -269,7 +286,7 @@ export default function NewProjectPage() {
           placeholder="컨텐츠 이미지를 입력해주세요"
           value={contents.imageUrl}
           onChange={handleObjectInput}
-          className="rounded-md p-2 outline-green-800"
+          className="rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
           type="text"
         />
         <div className="flex gap-4">
@@ -278,7 +295,7 @@ export default function NewProjectPage() {
             placeholder="컨텐츠 링크 제목을 입력해주세요"
             value={contentsLink.name}
             onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
+            className="w-full rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
             type="text"
           />
           <input
@@ -286,7 +303,7 @@ export default function NewProjectPage() {
             placeholder="컨텐츠 링크 URL을 입력해주세요"
             value={contentsLink.url}
             onChange={handleObjectInput}
-            className="w-full rounded-md p-2 outline-green-800"
+            className="w-full rounded-md p-2 outline-green-800 dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
             type="text"
           />
           <button
@@ -309,8 +326,10 @@ export default function NewProjectPage() {
       </div>
       {/* 이미지 추가 */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="image">썸네일 이미지</label>
-        <div className="flex gap-4 p-4 w-full min-h-[60px] bg-white rounded-md">
+        <label htmlFor="image" className="dark:text-white">
+          썸네일 이미지
+        </label>
+        <div className="flex gap-4 p-4 w-full min-h-[60px] bg-white dark:bg-dark-dp12 dark:text-white rounded-md">
           {image && (
             <>
               <div className="w-[100px] relative">
@@ -321,7 +340,12 @@ export default function NewProjectPage() {
           )}
         </div>
         <div className="flex justify-between">
-          <input id="image" type="file" onChange={handleInputImg} />
+          <input
+            id="image"
+            type="file"
+            onChange={handleInputImg}
+            className="dark:text-white"
+          />
           <button
             className="px-4 py-1 bg-orange-500 disabled:bg-orange-300 text-white rounded-lg"
             onClick={handleDeleteImg}
@@ -332,14 +356,17 @@ export default function NewProjectPage() {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="description">프로젝트 상태</label>
-        <div className="flex gap-4">
+        <label htmlFor="status_process" className="dark:text-white">
+          프로젝트 상태
+        </label>
+        <div className="flex gap-4 dark:text-white">
           <label>
             <input
               type="radio"
               id="status_process"
               name="status"
               value="process"
+              checked={newProjectData.status === 'process'}
               onChange={handleInput}
             />
             진행중
@@ -350,6 +377,7 @@ export default function NewProjectPage() {
               id="status_done"
               name="status"
               value="done"
+              checked={newProjectData.status === 'done'}
               onChange={handleInput}
             />
             완료
@@ -357,8 +385,15 @@ export default function NewProjectPage() {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="description">시작일자</label>
-        <input id="startedAt" type="date" onChange={handleInput} />
+        <label htmlFor="startedAt" className="dark:text-white">
+          시작일자
+        </label>
+        <input
+          id="startedAt"
+          type="date"
+          className="dark:outline-dark-primary dark:bg-dark-dp12 dark:text-gray-300"
+          onChange={handleInput}
+        />
       </div>
       <div className="flex gap-8 justify-center">
         <button
@@ -368,7 +403,7 @@ export default function NewProjectPage() {
           초기화
         </button>
         <button
-          className="w-[80px] h-[32px] bg-[#276955] hover:opacity-80 disabled:opacity-40 text-[16px] text-white font-bold rounded-md"
+          className="w-[80px] h-[32px] bg-light-primary hover:opacity-80 disabled:opacity-40 text-[16px] text-white font-bold rounded-md"
           onClick={submitNewProject}
           disabled={false}
         >
