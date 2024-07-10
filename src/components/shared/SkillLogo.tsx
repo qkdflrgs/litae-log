@@ -12,7 +12,7 @@ import FlutterLogo from '/public/svg/flutter.svg'
 import PrismaLogo from '/public/svg/prisma.svg'
 import RecoilLogo from '/public/svg/recoil.svg'
 
-const SkillMap = {
+export const SkillMap = {
   html: {
     logo: HtmlLogo,
     name: 'HTML',
