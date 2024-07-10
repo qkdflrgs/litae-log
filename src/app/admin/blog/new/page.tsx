@@ -180,7 +180,7 @@ export default function NewPostPage() {
             미리보기
           </span>
           <ReactMarkdown
-            className="prose flex flex-col w-full dark:text-white"
+            className="prose flex flex-col w-full dark:text-white blog-post"
             components={{
               h2(props) {
                 const { children, node, ...rest } = props
