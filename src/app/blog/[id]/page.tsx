@@ -48,7 +48,10 @@ export default function BlogDetail({ params }: BlogDetailPageProps) {
 
                       return (
                         <h2 id={id} className="group" {...rest}>
-                          <a href={`#${id}`} className="no-underline relative">
+                          <a
+                            href={`#${id}`}
+                            className="no-underline relative text-black dark:text-white"
+                          >
                             {children}
                             <div
                               onClick={() =>

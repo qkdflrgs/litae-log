@@ -27,9 +27,6 @@ body {
 
   h2 {
     @apply text-[28px] font-bold py-4;
-    a {
-      @apply no-underline text-black dark:text-white;
-    }
   }
 
   h3 {
