@@ -22,9 +22,9 @@ function LeftArrow({ styles }: { styles?: string }) {
   return (
     <svg
       className={styles}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
     >
       <polyline points="15 18 9 12 15 6" />
     </svg>
@@ -35,9 +35,9 @@ function RightArrow({ styles }: { styles?: string }) {
   return (
     <svg
       className={styles}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
     >
       <polyline points="9 18 15 12 9 6" />
     </svg>
@@ -54,7 +54,7 @@ function Mail({ styles }: { styles?: string }) {
         fill-rule="evenodd"
         id="black"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
       >
         <g id="mail">
           <path
@@ -78,10 +78,10 @@ function Github({ styles }: { styles?: string }) {
       <defs />
       <g
         fill="none"
-        fill-rule="evenodd"
+        fillRule="evenodd"
         id="black"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
       >
         <g id="github">
           <path
@@ -103,7 +103,7 @@ function LinkedIn({ styles }: { styles?: string }) {
     <svg className={styles}>
       <title />
       <defs />
-      <g fill-rule="evenodd" id="black" stroke="none" stroke-width="1">
+      <g fillRule="evenodd" id="black" stroke="none" strokeWidth="1">
         <g id="linkedin">
           <path
             d="M30,60 C46.5685433,60 60,46.5685433 60,30 C60,13.4314567 46.5685433,0 30,0 C13.4314567,0 0,13.4314567 0,30 C0,46.5685433 13.4314567,60 30,60 Z"
