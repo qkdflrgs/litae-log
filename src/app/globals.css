@@ -22,19 +22,55 @@ body {
 
 .blog-post {
   h1 {
-    @apply text-[24px] font-bold;
+    @apply text-[36px] font-bold py-6;
   }
+
   h2 {
-    @apply text-[24px] font-bold;
+    @apply text-[28px] font-bold py-4;
+    a {
+      @apply no-underline text-black dark:text-white;
+    }
   }
+
+  h3 {
+    @apply text-[20px] font-bold py-3;
+  }
+
+  ol {
+    @apply list-decimal ml-4;
+  }
+
+  ul {
+    @apply list-disc ml-4;
+    ul {
+      list-style-type: circle;
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+
+  li {
+    @apply py-2;
+  }
+
+  a {
+    @apply text-light-primary dark:text-dark-primary underline;
+  }
+
+  blockquote {
+    @apply p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800;
+    p {
+      @apply pb-0;
+    }
+  }
+
   strong {
     @apply font-bold;
   }
-  p {
-    @apply py-2;
-  }
-  textarea {
-    height: 0;
+
+  code {
+    @apply text-[13px] rounded-md;
   }
 }
 
