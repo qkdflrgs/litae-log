@@ -8,6 +8,7 @@ import React from 'react'
 import usePost from '@hooks/usePost'
 import transformDate from '@utils/transformDate'
 import useRelatedPost from '@/hooks/useRelatedPost'
+import BlogIndex from '@/components/blog/BlogIndex'
 
 interface BlogDetailPageProps {
   params: { id: string }
@@ -35,9 +36,9 @@ export default function BlogDetail({ params }: BlogDetailPageProps) {
                   {data?.title}
                 </h1>
               </div>
-              <div className="blog-post flex">
+              <div className="flex">
                 <ReactMarkdown
-                  className="prose flex flex-col w-full dark:text-gray-300"
+                  className="prose flex flex-col w-full dark:text-gray-300 blog-post"
                   components={{
                     h2(props) {
                       const { children, node, ...rest } = props
@@ -46,11 +47,7 @@ export default function BlogDetail({ params }: BlogDetailPageProps) {
                         .replaceAll(' ', '')
 
                       return (
-                        <h2
-                          id={id}
-                          className="group text-[24px] py-2 dark:text-white"
-                          {...rest}
-                        >
+                        <h2 id={id} className="group" {...rest}>
                           <a href={`#${id}`} className="no-underline relative">
                             {children}
                             <div
@@ -63,9 +60,9 @@ export default function BlogDetail({ params }: BlogDetailPageProps) {
                                 fill="none"
                                 height="16"
                                 stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 viewBox="0 0 24 24"
                                 width="16"
                               >
@@ -100,40 +97,44 @@ export default function BlogDetail({ params }: BlogDetailPageProps) {
                 </ReactMarkdown>
               </div>
             </article>
-            <div className="flex flex-col gap-4">
-              <h3 className="text-[24px] font-semibold text-light-primary dark:text-dark-primary">
-                Related Posts
-              </h3>
-              <div className="flex gap-4">
-                {related?.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`/blog/${item.id}`}
-                    className="w-full flex flex-col gap-4 max-w-[320px] p-2 text-[14px] bg-white dark:bg-dark-dp06 rounded-md cursor-pointer"
-                  >
-                    <span className="text-[16px] line-clamp-2 font-bold dark:text-white">
-                      {item.title}
-                    </span>
-                    <div className="flex flex-col gap-2">
-                      <p className="line-clamp-2 text-ellipsis text-gray-500 dark:text-gray-400">
-                        {item.description}
-                      </p>
-                      <span className="text-end text-gray-400 dark:text-gray-500">
-                        {transformDate(item.createdAt)}
+            {related && related.length !== 0 && (
+              <div className="flex flex-col gap-4">
+                <h3 className="text-[24px] font-semibold text-light-primary dark:text-dark-primary">
+                  Related Posts
+                </h3>
+                <div className="flex gap-4">
+                  {related.map((item) => (
+                    <a
+                      key={item.id}
+                      href={`/blog/${item.id}`}
+                      className="w-full flex flex-col gap-4 max-w-[320px] p-2 text-[14px] bg-white dark:bg-dark-dp06 rounded-md cursor-pointer"
+                    >
+                      <span className="text-[16px] line-clamp-2 font-bold dark:text-white">
+                        {item.title}
                       </span>
-                    </div>
-                  </a>
-                ))}
+                      <div className="flex flex-col gap-2">
+                        <p className="line-clamp-2 text-ellipsis text-gray-500 dark:text-gray-400">
+                          {item.description}
+                        </p>
+                        <span className="text-end text-gray-400 dark:text-gray-500">
+                          {transformDate(item.createdAt)}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </section>
-          <aside className="w-[240px] p-4 max-h-[400px] h-full hidden sticky top-[30px] mt-[180px] lg:flex flex-col gap-4 border border-light-primary dark:border-dark-primary rounded-lg">
+          {data?.index && <BlogIndex indexData={data.index} />}
+          {/* <aside className="w-[240px] p-4 max-h-[400px] h-full hidden sticky top-[30px] mt-[180px] lg:flex flex-col gap-4 border border-light-primary dark:border-dark-primary rounded-lg">
             <span className="text-[18px] font-semibold text-light-primary dark:text-dark-primary">
               INDEX
             </span>
+
             {data?.index && (
               <ul className="flex flex-col gap-2 text-gray-400 dark:text-gray-400">
-                {data.index.map((title) => (
+                {data.index.map((title, index) => (
                   <li key={title.replaceAll(' ', '')}>
                     <a href={`#${title.replaceAll(' ', '')}`}>
                       <span>{title}</span>
@@ -142,7 +143,7 @@ export default function BlogDetail({ params }: BlogDetailPageProps) {
                 ))}
               </ul>
             )}
-          </aside>
+          </aside> */}
         </div>
       </div>
     </>
