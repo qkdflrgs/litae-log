@@ -11,14 +11,14 @@ export default function AboutPage() {
       <div className="flex flex-col gap-[200px] py-12 sm:py-16">
         <div className="w-full min-h-[200px] flex flex-col-reverse lg:flex-row justify-between">
           <div className="flex flex-col justify-end">
-            <p className="text-[28px] lg:text-[36px] dark:text-white text-end lg:text-start">
-              행복을 만들고 싶은
-            </p>
             <p className="text-[28px] lg:text-[36px] dark:text-white underline decoration-dark-primary text-end lg:text-start">
+              함께 성장하는
+            </p>
+            <p className="text-[28px] lg:text-[36px] dark:text-white text-end lg:text-start">
               프론트엔드 개발자
             </p>
             <span className="text-[28px] lg:text-[36px] dark:text-white text-end lg:text-start">
-              이태곤
+              이태곤입니다 😀
             </span>
           </div>
           <div className="w-full lg:w-[400px] h-[300px] relative">
